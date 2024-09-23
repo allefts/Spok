@@ -1,0 +1,73 @@
+/* GLOBAL STYLING */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+.show {
+  opacity: 1 !important;
+}
+
+/* REAL STYLING */
+#toast {
+  width: 40%;
+  height: 50px;
+  border-radius: 0.25rem;
+  padding: 0.25rem;
+  background: #d93526;
+  color: #f0f0fb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  text-align: center;
+
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+
+  transition: opacity 300ms ease;
+}
+
+nav {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid yellowgreen;
+}
+
+.nav_link {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 300ms ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+#content {
+  height: 100%;
+  display: flex;
+}
+
+#sidebar_content {
+  flex: 1 0 15%;
+  border-right: 2px solid yellowgreen;
+  height: 100%;
+}
+
+#main_content {
+  flex: 1 0 85%;
+}

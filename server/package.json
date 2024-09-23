@@ -1,0 +1,20 @@
+{
+  "name": "spok_server",
+  "version": "0.0.1",
+  "module": "index.ts",
+  "type": "module",
+  "author": "allefts",
+  "proxy": "http://localhost:4000",
+  "scripts": {
+    "dev": "bun --watch run './index.ts'"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "hono": "^4.5.9"
+  }
+}
