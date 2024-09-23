@@ -1,7 +1,9 @@
 import "@picocss/pico";
-import "htmx.org";
 import { Router } from "./utils/router.ts";
 import { showToast } from "./utils/toast.ts";
+import htmx from "htmx.org";
+
+htmx.logAll();
 
 document.addEventListener("DOMContentLoaded", async () => {
   //Error Handling for HTMX

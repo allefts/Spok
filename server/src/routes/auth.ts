@@ -1,10 +1,18 @@
 import { Hono } from "hono";
-import { createUser, getUserByEmail, userAlreadyExists } from "../controllers/auth.ts";
+import {
+  createUser,
+  getUserByEmail,
+  userAlreadyExists,
+} from "../controllers/auth.ts";
 import type { APIResponse, RegisterUser } from "../types.ts";
 import { deleteCookie, getCookie, setCookie } from "hono/cookie";
-import { createJWT, getUserFromCookie, verifyPassword } from "../utils/auth.ts";
+import {
+  createJWT,
+  getUserFromCookie,
+  userSignedIn,
+  verifyPassword,
+} from "../utils/auth.ts";
 import { protect } from "../utils/middleware.ts";
-import { Jwt } from "hono/utils/jwt";
 import { HTTPException } from "hono/http-exception";
 
 /*
@@ -56,14 +64,18 @@ authRoutes.post("/signin", async (c) => {
     maxAge: 60 * 60 * 24, //1 day
   });
 
-  return c.html(`<h1>Welcome ${user.username}!</h1>`);
+  return c.redirect("/main");
 });
 
 authRoutes.post("/register", async (c) => {
   const formData = await c.req.formData();
 
   //Check if valid data
-  if (!formData.has("username") || !formData.has("email") || !formData.has("password")) {
+  if (
+    !formData.has("username") ||
+    !formData.has("email") ||
+    !formData.has("password")
+  ) {
     throw new HTTPException(401, { message: "Invalid Form Data" });
   }
 
@@ -107,6 +119,10 @@ authRoutes.post("/register", async (c) => {
 });
 
 authRoutes.get("/signin", async (c) => {
+  if (await userSignedIn(c)) {
+    return c.redirect("/");
+  }
+
   return c.html(`
     <form id="signin_form" hx-post="/signin">
       <label for="email">Email</label>
@@ -119,6 +135,10 @@ authRoutes.get("/signin", async (c) => {
 });
 
 authRoutes.get("/register", async (c) => {
+  if (await userSignedIn(c)) {
+    return c.redirect("/");
+  }
+
   return c.html(`
     <form id="register_form">
         <label for="username">Username</label>
