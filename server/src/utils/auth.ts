@@ -27,7 +27,7 @@ export const getUserFromCookie = async (c: Context) => {
   const authCookie = getCookie(c, "auth");
   if (authCookie) {
     const { payload } = Jwt.decode(authCookie);
-    return c.json(payload);
+    return c.json(payload, 200);
   } else {
     throw new HTTPException(401, { message: "Unable to get user" });
   }

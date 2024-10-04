@@ -1,16 +1,6 @@
-import { getCookie } from "hono/cookie";
 import { createMiddleware } from "hono/factory";
 import { jwt } from "hono/jwt";
-import { Jwt } from "hono/utils/jwt";
-
-//Protects routes so that they can only be requested from HTMX
-// export const htmxOnly = createMiddleware(async (c, next) => {
-//   if (c.req.header("HX-Request")) {
-//     await next();
-//   } else {
-//     return c.html("<h1>404 Not Found</h1>");
-//   }
-// });
+import { userSignedIn } from "./auth";
 
 export const protect = createMiddleware(async (c, next) => {
   const jwtMiddleware = jwt({
@@ -20,4 +10,12 @@ export const protect = createMiddleware(async (c, next) => {
   });
 
   return jwtMiddleware(c, next);
+});
+
+export const checkSignedIn = createMiddleware(async (c, next) => {
+  const signedIn = await userSignedIn(c);
+  if (signedIn) {
+    return;
+  }
+  return await next();
 });

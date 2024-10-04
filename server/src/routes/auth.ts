@@ -5,14 +5,9 @@ import {
   userAlreadyExists,
 } from "../controllers/auth.ts";
 import type { APIResponse, RegisterUser } from "../types.ts";
-import { deleteCookie, getCookie, setCookie } from "hono/cookie";
-import {
-  createJWT,
-  getUserFromCookie,
-  userSignedIn,
-  verifyPassword,
-} from "../utils/auth.ts";
-import { protect } from "../utils/middleware.ts";
+import { deleteCookie, setCookie } from "hono/cookie";
+import { createJWT, getUserFromCookie, verifyPassword } from "../utils/auth.ts";
+import { checkSignedIn, protect } from "../utils/middleware.ts";
 import { HTTPException } from "hono/http-exception";
 
 /*
@@ -25,6 +20,7 @@ import { HTTPException } from "hono/http-exception";
 */
 
 const authRoutes = new Hono();
+
 authRoutes.get("/user", protect, async (c) => {
   return await getUserFromCookie(c);
 });
@@ -64,7 +60,7 @@ authRoutes.post("/signin", async (c) => {
     maxAge: 60 * 60 * 24, //1 day
   });
 
-  return c.redirect("/main");
+  return c.redirect("/#main");
 });
 
 authRoutes.post("/register", async (c) => {
@@ -118,13 +114,9 @@ authRoutes.post("/register", async (c) => {
   } as APIResponse);
 });
 
-authRoutes.get("/signin", async (c) => {
-  if (await userSignedIn(c)) {
-    return c.redirect("/");
-  }
-
+authRoutes.get("/signin", checkSignedIn, async (c) => {
   return c.html(`
-    <form id="signin_form" hx-post="/signin">
+    <form id="signin_form" action="http://localhost:4000/signin" method="POST">
       <label for="email">Email</label>
       <input required class="signin_inpt" type="email" placeholder="brucelee@address.com" name="email" />
       <label for="password">Password</label>
@@ -134,13 +126,9 @@ authRoutes.get("/signin", async (c) => {
   `);
 });
 
-authRoutes.get("/register", async (c) => {
-  if (await userSignedIn(c)) {
-    return c.redirect("/");
-  }
-
+authRoutes.get("/register", checkSignedIn, async (c) => {
   return c.html(`
-    <form id="register_form">
+    <form id="register_form" action="/register" method="POST">
         <label for="username">Username</label>
         <input
           required

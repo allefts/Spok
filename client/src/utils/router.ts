@@ -1,4 +1,6 @@
 export const Router = {
+  userSignedIn: false,
+
   //Handle <a> clicks to navigate
   setupLinks: function () {
     const navLinks = document.querySelectorAll(".nav_link");
@@ -15,7 +17,7 @@ export const Router = {
 
   //Handles url hash change, prev and next routing for browser
   setupHashChangePrevNext: function () {
-    window.addEventListener("hashchange", handleHashChange);
+    // window.addEventListener("hashchange", handleHashChange);
     window.addEventListener("popstate", handleHashChange);
     function handleHashChange() {
       Router.loadContent(location.hash);
@@ -31,26 +33,32 @@ export const Router = {
     }
     Router.loadContent(section);
   },
+
   //Loads new page
   loadContent: async function (section: string) {
+    this.userSignedIn
+      ? this.loadPrivateContent(section)
+      : this.loadPublicContent(section);
+  },
+
+  loadPublicContent: async function (section: string) {
     switch (section) {
-      case "#signin":
+      default:
         const { SignInComponent } = await import("../components/SignIn.ts");
         SignInComponent.init();
         break;
-      case "#play":
-        const { PlayComponent } = await import("../components/Play.ts");
-        PlayComponent.init();
-        break;
-      case "#missions":
-        const { MissionsComponent } = await import("../components/Missions.ts");
-        MissionsComponent.init();
-        break;
-      case "#inventory":
-        const { InventoryComponent } = await import("../components/Inventory.ts");
-        InventoryComponent.init();
+    }
+  },
+
+  loadPrivateContent: async function (section: string) {
+    switch (section) {
+      case "#logs":
+        const { LogsComponent } = await import("../components/Logs.ts");
+        LogsComponent.init();
         break;
       default:
+        const { MainComponent } = await import("../components/Main.ts");
+        MainComponent.init();
         break;
     }
   },

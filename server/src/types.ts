@@ -1,3 +1,25 @@
+export enum ACTION {
+  WALK = "walk",
+  REST = "rest",
+  EAT = "eat",
+  DRINK = "drink",
+}
+
+export const toACTION = (str: string) => {
+  switch (str) {
+    case "walk":
+      return ACTION.WALK;
+    case "rest":
+      return ACTION.REST;
+    case "eat":
+      return ACTION.EAT;
+    case "drink":
+      return ACTION.DRINK;
+    default:
+      break;
+  }
+};
+
 export type APIResponse = {
   success: boolean;
   data: any | null;
@@ -15,4 +37,11 @@ export type User = {
   email: string;
   username: string;
   created_on: string;
+};
+
+export type Log = {
+  id: number;
+  user_id: 1;
+  action: ACTION;
+  timestamp: string;
 };
