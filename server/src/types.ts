@@ -1,25 +1,3 @@
-export enum ACTION {
-  WALK = "walk",
-  REST = "rest",
-  EAT = "eat",
-  DRINK = "drink",
-}
-
-export const toACTION = (str: string) => {
-  switch (str) {
-    case "walk":
-      return ACTION.WALK;
-    case "rest":
-      return ACTION.REST;
-    case "eat":
-      return ACTION.EAT;
-    case "drink":
-      return ACTION.DRINK;
-    default:
-      break;
-  }
-};
-
 export type APIResponse = {
   success: boolean;
   data: any | null;
@@ -37,11 +15,43 @@ export type User = {
   email: string;
   username: string;
   created_on: string;
+  actions_completed: number;
 };
 
 export type Log = {
   id: number;
-  user_id: 1;
-  action: ACTION;
+  user_id: number;
+  action: Action;
   timestamp: string;
 };
+
+export type Action = {
+  name: string;
+  icon: string;
+};
+
+export const baseActions: Action[] = [
+  { icon: "👟", name: "Ran" },
+  { icon: "🔬", name: "Studied" },
+  { icon: "📝", name: "Wrote" },
+  { icon: "🕹️", name: "Gamed" },
+  { icon: "🏋️‍♂️", name: "Lifted" },
+  { icon: "🏟️", name: "Event" },
+  { icon: "🎤", name: "Concert" },
+  { icon: "🎬", name: "Movie" },
+  { icon: "🧳", name: "Traveled" },
+  { icon: "🍎", name: "Schooled" },
+  { icon: "⌨️", name: "Coded" },
+  { icon: "💼", name: "Worked" },
+  { icon: "💤", name: "Napped" },
+  { icon: "🍳", name: "Cooked" },
+  { icon: "🛠️", name: "Fixed Stuff" },
+  { icon: "💲", name: "Sold" },
+  { icon: "🍹", name: "Partied" },
+  { icon: "📜", name: "Read" },
+  { icon: "✏️", name: "Homework" },
+  { icon: "🛍️", name: "Shopped" },
+  { icon: "⚽", name: "Played" },
+  { icon: "🌹", name: "Date" },
+  { icon: "🗓️", name: "Appointment" },
+];

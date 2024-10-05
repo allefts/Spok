@@ -8,7 +8,7 @@ const createUsersTable = db.query(`
         username TEXT NOT NULL UNIQUE,
         email TEXT NOT NULL UNIQUE,
         password TEXT NOT NULL,
-        actions_left INTEGER DEFAULT 4,
+        actions_left INTEGER DEFAULT 8,
         actions_completed INTEGER DEFAULT 0,
         created_on DATETIME DEFAULT CURRENT_TIMESTAMP);`);
 

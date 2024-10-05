@@ -3,12 +3,18 @@ import { getCookie } from "hono/cookie";
 import { verify } from "hono/jwt";
 import { getUserFromCookie } from "../utils/auth";
 import { HTTPException } from "hono/http-exception";
-import { ACTION, toACTION } from "../types";
 import { doAction, getRemainingActions } from "../controllers/main";
+import { parseAction } from "../utils/formatting";
+import { baseActions, type Action } from "../types";
 
 const mainRoutes = new Hono();
 
-//Checks if user is signed in, default fetch route for frontend
+/* 
+  GET /checkauth => just checks if there is a user signed in or not
+  GET /main => returns the html for the main page
+  POST /main => endpoint for when user tries to complete an action
+*/
+
 mainRoutes.get("/checkauth", async (c) => {
   const authCookie = getCookie(c, "auth");
   if (authCookie) {
@@ -24,46 +30,45 @@ mainRoutes.get("/checkauth", async (c) => {
   return c.redirect("/signin");
 });
 
-//Returns HTML for main page
 mainRoutes.get("/main", async (c) => {
   return c.html(`
-    <div>
-      <h4>Actions left today: </h4>
+    <div class="main_content">
+      <h1 class="main_title" >What did you do today?</h1>
+      <div class="main_input_content">
+        <button class="random_emoji_btn" type="select">🤗</button>
+        <input class="action_input" autofocus type="text" />
+      </div>
       <div class="actions">
-        <div class="action_card" data-action="walk">
-          <h1>🛣️</h1>
-          <h3>Walk</h3>
-        </div>
-        <div class="action_card" data-action="rest">
-          <h1>🏕️</h1>
-          <h3>Rest</h3>
-        </div>
-        <div class="action_card" data-action="eat">
-          <h1>🍓</h1>
-          <h3>Eat</h3>
-        </div>
-        <div class="action_card" data-action="drink">
-          <h1>💧</h1>
-          <h3>Drink</h3>
-        </div>
+      ${baseActions
+        .map((action) => {
+          return `
+          <div
+            class="action_card"
+          >
+            <h3>${action.icon}</h3>
+            <h5>${action.name}</h5>
+          </div>
+        `;
+        })
+        .join("")}
       </div>
     </div>
   `);
 });
 
-//Endpoint for completing an action
 mainRoutes.post("/main", async (c) => {
   const { id } = await (await getUserFromCookie(c)).json();
-  const userAction = toACTION(await c.req.text());
-
-  if (!userAction) {
+  const rawAction = await c.req.text();
+  if (!rawAction) {
     throw new HTTPException(401, { message: "Unable to complete action" });
   }
 
+  const userAction: Action = parseAction(rawAction);
+
   const actionsLeft = getRemainingActions(id);
-  if (actionsLeft === 0) {
-    throw new HTTPException(401, { message: "No actions left!" });
-  }
+  // if (actionsLeft === 0) {
+  //   throw new HTTPException(401, { message: "No actions left!" });
+  // }
 
   doAction(userAction, id);
 

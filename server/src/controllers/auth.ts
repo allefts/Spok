@@ -27,7 +27,9 @@ export const createUser = (user: RegisterUser) => {
 
 export const getUserByEmail = (email: string) => {
   const user = db
-    .query(`SELECT id, username, email, created_on FROM users WHERE email = ?;`)
+    .query(
+      `SELECT id, username, email, actions_completed, created_on FROM users WHERE email = ?;`
+    )
     .get(email) as User;
   return user;
 };

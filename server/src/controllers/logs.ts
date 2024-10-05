@@ -1,10 +1,12 @@
 import { db } from "../db/db";
-import type { Log } from "../types";
+import { parseLogs } from "../utils/formatting";
 
 export const getAllLogs = (userId: number) => {
-  const logs = db
+  const rawLogs = db
     .prepare("SELECT * FROM logs where user_id = ?;")
-    .all(userId) as Log[];
+    .all(userId);
 
-  return logs;
+  const parsedLogs = parseLogs(rawLogs);
+
+  return parsedLogs;
 };

@@ -1,14 +1,15 @@
-import type { ACTION } from "../types";
 import { db } from "../db/db";
+import type { Action } from "../types";
 
-export const doAction = (action: ACTION, userId: number) => {
+export const doAction = (action: Action, userId: number) => {
   try {
-    //Creates Log
+    //Creates Log, saves the action as "<ICON> <NAME>"
     db.prepare("INSERT INTO logs (user_id, action) VALUES (?, ?);").run(
       userId,
-      action
+      action.icon + " " + action.name
     );
 
+    //Updates user logs
     db.prepare(
       "UPDATE users SET actions_left = actions_left - 1, actions_completed = actions_completed + 1 WHERE id = ?;"
     ).run(userId);
