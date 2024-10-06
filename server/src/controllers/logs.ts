@@ -20,3 +20,32 @@ export const getMostRecentLog = (userId: number) => {
 
   return parsedLog;
 };
+
+export const deleteLog = (userId: number, logId: number) => {
+  try {
+    db.prepare("DELETE FROM logs where user_id = ? AND id = ?;").run(
+      userId,
+      logId
+    );
+    return true;
+  } catch (err) {
+    console.log(err);
+    console.log("Error deleting log");
+    return false;
+  }
+};
+
+export const getLogsByDate = (userId: number, date: string) => {
+  try {
+    const logsOnDate = db
+      .prepare("SELECT * FROM logs WHERE date(timestamp) = ? AND user_id = ?")
+      .all(date, userId);
+
+    const parsedLogs = parseLogs(logsOnDate);
+    return parsedLogs;
+  } catch (err) {
+    console.log(err);
+    console.log("Unable to get logs by date");
+  }
+  return [];
+};
