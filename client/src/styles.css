@@ -49,6 +49,11 @@ body {
   transition: all 300ms ease;
 }
 
+.no_logs_message {
+  text-align: center;
+  color: yellowgreen;
+}
+
 nav {
   padding: 0 1rem;
   height: 75px;
@@ -75,12 +80,44 @@ nav {
 
 /* Main Content */
 .main_content {
+  margin-top: 4rem !important;
   position: relative;
-  width: 65%;
+  width: 95%;
   margin: 0 auto;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  flex-flow: row wrap;
   gap: 2rem;
+}
+
+.main {
+  display: flex;
+  gap: 2rem;
+  flex-direction: column;
+  flex-basis: 70%;
+}
+
+.sidebar {
+  min-width: 250px;
+  flex-basis: 25%;
+}
+
+.sidebar_title {
+  text-align: center;
+}
+
+.sidebar_log_card {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar_log_action {
+  max-width: 25ch !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .main_title {

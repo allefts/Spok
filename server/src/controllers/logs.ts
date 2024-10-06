@@ -10,3 +10,13 @@ export const getAllLogs = (userId: number) => {
 
   return parsedLogs;
 };
+
+export const getMostRecentLog = (userId: number) => {
+  const mostRecentLog = db
+    .prepare("SELECT * FROM logs ORDER BY timestamp DESC LIMIT 1;")
+    .all(userId);
+
+  const parsedLog = parseLogs(mostRecentLog);
+
+  return parsedLog;
+};

@@ -33,24 +33,28 @@ mainRoutes.get("/checkauth", async (c) => {
 mainRoutes.get("/main", async (c) => {
   return c.html(`
     <div class="main_content">
-      <h1 class="main_title" >What did you do today?</h1>
-      <div class="main_input_content">
-        <button class="random_emoji_btn" type="select">🤗</button>
-        <input class="action_input" autofocus type="text" />
+      <div class="main">
+        <h1 class="main_title" >What did you do today?</h1>
+        <div class="main_input_content">
+          <button class="random_emoji_btn" type="select">🤗</button>
+          <input class="action_input" autofocus type="text" minlength="3" maxlength="85" />
+        </div>
+        <div class="actions">
+          ${baseActions
+            .map((action) => {
+              return `
+            <div class="action_card">
+              <h3>${action.icon}</h3>
+              <h5>${action.name}</h5>
+            </div>
+            `;
+            })
+            .join("")}
+        </div>
       </div>
-      <div class="actions">
-      ${baseActions
-        .map((action) => {
-          return `
-          <div
-            class="action_card"
-          >
-            <h3>${action.icon}</h3>
-            <h5>${action.name}</h5>
-          </div>
-        `;
-        })
-        .join("")}
+      <div class="sidebar">
+        <h3 class="sidebar_title">Today:</h3>
+        <div class="sidebar_contents"></div>
       </div>
     </div>
   `);
@@ -66,9 +70,9 @@ mainRoutes.post("/main", async (c) => {
   const userAction: Action = parseAction(rawAction);
 
   const actionsLeft = getRemainingActions(id);
-  // if (actionsLeft === 0) {
-  //   throw new HTTPException(401, { message: "No actions left!" });
-  // }
+  if (actionsLeft === 0) {
+    throw new HTTPException(401, { message: "No actions left!" });
+  }
 
   doAction(userAction, id);
 
