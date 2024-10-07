@@ -30,11 +30,10 @@ export const LogsComponent = {
     const yesterdayLogsBtn = logsContent?.querySelector(".logs_yesterday");
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    const formattedYesterday = yesterday.toISOString().split("T")[0];
 
     yesterdayLogsBtn?.addEventListener("click", async () => {
       const res = await fetch(
-        `http://localhost:4000/logs/${formattedYesterday}`
+        `http://localhost:4000/logs/${yesterday.toString()}`
       );
 
       if (res.status === 200) {

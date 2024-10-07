@@ -33,6 +33,7 @@ app.onError((err, c) => {
     );
   }
 
+  console.log(err);
   //Other types of errors
   return c.json({ success: false, error: "An unexpected error occurred" }, 500);
 });

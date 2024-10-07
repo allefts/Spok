@@ -10,7 +10,7 @@ const createUsersTable = db.query(`
         password TEXT NOT NULL,
         actions_left INTEGER DEFAULT 8,
         actions_completed INTEGER DEFAULT 0,
-        created_on DATETIME DEFAULT CURRENT_TIMESTAMP);`);
+        created_on DATETIME DEFAULT (datetime('now', 'localtime')));`);
 
 createUsersTable.run();
 
@@ -19,7 +19,7 @@ const createLogsTable = db.query(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         action TEXT NOT NULL,
-        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        timestamp DATETIME DEFAULT (datetime('now', 'localtime')),
         FOREIGN KEY (user_id) REFERENCES users(id));`);
 
 createLogsTable.run();
@@ -27,3 +27,5 @@ createLogsTable.run();
 // CREATE UNIQUE INDEX idx_users_username ON users(username);
 // CREATE UNIQUE INDEX idx_users_email ON users(email);
 // CREATE INDEX idx_users_created_on ON users(created_on);
+
+// timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -43,9 +43,7 @@ logRoutes.get("/logs", async (c) => {
     `<div class="logs_content">
         <div class="logs_controls"> 
           <span class="logs_yesterday">👈 Yesterday</span>
-          <h1 class="logs_date">${new Date().toLocaleDateString("en", {
-            timeZone: "UTC",
-          })}</h1>
+          <h1 class="logs_date">${new Date().toLocaleDateString()}</h1>
         </div>
         ${logCards.map((card) => card).join("")}
     </div>`
@@ -95,7 +93,7 @@ logRoutes.get("/recentlog", async (c) => {
 logRoutes.get("/logs/:day", async (c) => {
   const { id } = await (await getUserFromCookie(c)).json();
   //Yesterday
-  const logsDate = c.req.param("day");
+  const logsDate = new Date(c.req.param("day")).toLocaleDateString();
   // Today
   // const logsDate = new Date().toISOString().split("T")[0];
 
@@ -124,9 +122,7 @@ logRoutes.get("/logs/:day", async (c) => {
     success: true,
     html: `<div class="logs_content">
       <div class="logs_controls">
-        <h1 class="logs_date">${new Date(logsDate).toLocaleDateString("en", {
-          timeZone: "UTC",
-        })}</h1>
+        <h1 class="logs_date">${logsDate}</h1>
         <span class="logs_today_btn">Today 👉</span>
       </div>
       ${logCards.map((card) => card).join("")}

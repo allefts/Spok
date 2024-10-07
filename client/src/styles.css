@@ -102,6 +102,10 @@ nav {
   flex-basis: 25%;
 }
 
+.sidebar_contents {
+  margin-top: 2rem;
+}
+
 .sidebar_title {
   text-align: center;
 }
@@ -236,7 +240,8 @@ nav {
 
 .log_action,
 .log_timestamp,
-.sidebar_log_action {
+.sidebar_log_action,
+.sidebar_log_timestamp {
   margin-bottom: 0 !important;
 }
 
