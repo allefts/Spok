@@ -12,6 +12,10 @@ const logRoutes = new Hono();
 
 /*
   GET /logs => html for logs page
+  GET /sidebarlogs => html for main page sidebar uses today's logs 
+  GET /recentlog => gets the most recent log for adding to the sidebar
+  GET /logs/:day => gets the logs for a certain day
+  DELETE /log => deletes a log
 */
 
 logRoutes.get("/logs", async (c) => {
@@ -20,7 +24,15 @@ logRoutes.get("/logs", async (c) => {
   const logs = getAllLogs(id);
 
   if (logs.length === 0) {
-    return c.html(`<h5 class="no_logs_message">GO DO STUFF!</h5>`);
+    return c.html(`
+      <div class="logs_content">
+        <div class="logs_controls"> 
+          <span class="logs_yesterday">👈 Yesterday</span>
+          <h1 class="logs_date">${new Date().toLocaleDateString()}</h1>
+        </div>
+        <h5 class="no_logs_message">GO DO STUFF!</h5>
+      </div>
+      `);
   }
 
   const logCards = logs.map((log) => {
@@ -83,7 +95,7 @@ logRoutes.get("/recentlog", async (c) => {
   return c.html(`
     <div class="sidebar_log_card">
       <p class="sidebar_log_action">${log.action.icon} ${log.action.name}</p>
-      <p class="log_timestamp">
+      <p class="sidebar_log_timestamp">
         ${new Date(log.timestamp).toLocaleTimeString()}
       </p>
     </div>

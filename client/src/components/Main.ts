@@ -50,7 +50,10 @@ export const MainComponent = {
 
           //Updates Sidebar
           const mostRecentLog = await fetch("http://localhost:4000/recentlog");
-          sidebarContent!.innerHTML += await mostRecentLog.text();
+          sidebarContent!.insertAdjacentHTML(
+            "beforeend",
+            await mostRecentLog.text()
+          );
           sidebarContent!.querySelector(".no_logs_message")?.remove();
         }
       }

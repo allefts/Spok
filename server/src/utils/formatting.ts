@@ -20,3 +20,19 @@ export const parseAction = (action: string) => {
   const name = parsedAction.slice(1).join(" ");
   return { icon, name } as Action;
 };
+
+export const toSQLiteDate = (date: string) => {
+  //MM/DD/YYYY -> YYYY-MM-DD
+  console.log(date);
+  let [m, d, y] = date.split("/");
+  console.log(m, d, y);
+  if (d.length === 1) {
+    d = "0" + d;
+  }
+
+  if (m.length === 1) {
+    m = "0" + m;
+  }
+
+  return [y, m, d].join("-");
+};

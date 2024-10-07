@@ -1,10 +1,14 @@
 import { db } from "../db/db";
-import { parseLogs } from "../utils/formatting";
+import { parseLogs, toSQLiteDate } from "../utils/formatting";
 
 export const getAllLogs = (userId: number) => {
   const rawLogs = db
-    .prepare("SELECT * FROM logs where user_id = ?;")
+    .prepare(
+      `SELECT * FROM logs where user_id = ? AND DATE(TIMESTAMP) = DATE("now", "localtime");`
+    )
     .all(userId);
+
+  // db.prepare(`UPDATE users SET actions_left = 5 WHERE id = ?`).run(userId);
 
   const parsedLogs = parseLogs(rawLogs);
 
@@ -27,6 +31,10 @@ export const deleteLog = (userId: number, logId: number) => {
       userId,
       logId
     );
+
+    db.prepare(
+      "UPDATE users SET actions_left = actions_left + 1, actions_completed = actions_completed - 1 WHERE id = ?;"
+    ).run(userId);
     return true;
   } catch (err) {
     console.log(err);
@@ -36,10 +44,13 @@ export const deleteLog = (userId: number, logId: number) => {
 };
 
 export const getLogsByDate = (userId: number, date: string) => {
+  const formattedDate = toSQLiteDate(date);
   try {
     const logsOnDate = db
-      .prepare("SELECT * FROM logs WHERE date(timestamp) = ? AND user_id = ?")
-      .all(date, userId);
+      .prepare(
+        `SELECT * FROM logs WHERE DATE(timestamp) = DATE(?) AND user_id = ?`
+      )
+      .all(formattedDate, userId);
 
     const parsedLogs = parseLogs(logsOnDate);
     return parsedLogs;
