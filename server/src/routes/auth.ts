@@ -107,11 +107,12 @@ authRoutes.post("/register", async (c) => {
     maxAge: 60 * 60 * 24,
   });
 
-  return c.json({
-    data: user,
-    success: true,
-    message: "User created and signed in",
-  } as APIResponse);
+  return c.redirect("/#main");
+  // return c.json({
+  //   data: user,
+  //   success: true,
+  //   message: "User created and signed in",
+  // } as APIResponse);
 });
 
 authRoutes.get("/signin", checkSignedIn, async (c) => {
@@ -122,13 +123,14 @@ authRoutes.get("/signin", checkSignedIn, async (c) => {
       <label for="password">Password</label>
       <input required class="signin_inpt" type="password" minlength="8" placeholder="8+ characters" name="password" />
       <button type="submit">Login</button>
+      <a href="#register" class="register_link nav_link">Register Here</a>
     </form>
   `);
 });
 
 authRoutes.get("/register", checkSignedIn, async (c) => {
   return c.html(`
-    <form id="register_form" action="/register" method="POST">
+    <form id="register_form" action="http://localhost:4000/register" method="POST">
         <label for="username">Username</label>
         <input
           required

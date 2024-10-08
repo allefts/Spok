@@ -22,12 +22,12 @@ mainRoutes.get("/checkauth", async (c) => {
     if (decodedPayload) {
       //Signed In
       const _user = await (await getUserFromCookie(c)).json();
-      return c.redirect("/main");
+      return c.redirect("/#main");
     }
   }
 
   //Not Signed In
-  return c.redirect("/signin");
+  return c.redirect("/#signin");
 });
 
 mainRoutes.get("/main", async (c) => {
@@ -53,7 +53,10 @@ mainRoutes.get("/main", async (c) => {
         </div>
       </div>
       <div class="sidebar">
-        <h3 class="sidebar_title">Today:</h3>
+        <div class="sidebar_header">
+          <h3 class="sidebar_title">${new Date().toLocaleDateString()}</h3>
+          <a href="#logs" class="nav_link">Logs 👉</a>            
+        </div>
         <div class="sidebar_contents"></div>
       </div>
     </div>

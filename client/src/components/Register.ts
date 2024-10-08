@@ -1,26 +1,24 @@
 import { Router } from "../utils/router";
 import { showToast } from "../utils/toast";
-import { SignedInLinks, SignedOutLinks } from "./Nav";
+import { SignedInLinks } from "./Nav";
 
-export const SignInComponent = {
+export const RegisterComponent = {
   init: async () => {
-    const html = await (await fetch("http://localhost:4000/signin")).text();
+    const html = await (await fetch("http://localhost:4000/register")).text();
     const content = document.getElementById("content");
     content!.innerHTML = html;
 
-    const signInForm = document.getElementById("signin_form");
+    const signInForm = document.getElementById("register_form");
     signInForm?.addEventListener("submit", async (e) => {
       e.preventDefault();
       try {
-        const res = await fetch("http://localhost:4000/signin", {
+        const res = await fetch("http://localhost:4000/register", {
           method: "POST",
           body: new FormData(signInForm as HTMLFormElement),
         });
 
         if (res.status !== 200) {
           showToast((await res.json()).message);
-          Router.userSignedIn = false;
-          SignedOutLinks.init();
         } else {
           Router.userSignedIn = true;
           SignedInLinks.init();

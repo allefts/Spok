@@ -1,20 +1,6 @@
 export const Router = {
   userSignedIn: false,
 
-  //Handle <a> clicks to navigate
-  setupLinks: function () {
-    const navLinks = document.querySelectorAll(".nav_link");
-    navLinks.forEach((navLink) => {
-      navLink.addEventListener("click", (e: Event) => {
-        e.preventDefault();
-        const section = "#" + (e.target! as HTMLElement).dataset["section"];
-        if (section !== location.hash) {
-          Router.navigateTo(section);
-        }
-      });
-    });
-  },
-
   //Handles url hash change, prev and next routing for browser
   setupHashChangePrevNext: function () {
     // window.addEventListener("hashchange", handleHashChange);
@@ -43,9 +29,17 @@ export const Router = {
 
   loadPublicContent: async function (section: string) {
     switch (section) {
-      default:
+      case "#signin":
         const { SignInComponent } = await import("../components/SignIn.ts");
         SignInComponent.init();
+        break;
+      case "#register":
+        const { RegisterComponent } = await import("../components/Register.ts");
+        RegisterComponent.init();
+        break;
+      default:
+        const { LandingComponent } = await import("../components/Landing.ts");
+        LandingComponent.init();
         break;
     }
   },
