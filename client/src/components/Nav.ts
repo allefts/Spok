@@ -19,7 +19,7 @@ export const SignedInLinks = {
     const signOutLink = navBar!.querySelector(".signout_link");
     signOutLink!.addEventListener("click", async (e) => {
       e.preventDefault();
-      await fetch("http://localhost:4000/logout", { method: "POST" });
+      await fetch("/api/logout", { method: "POST" });
       Router.userSignedIn = false;
       SignedOutLinks.init();
       Router.navigateTo("#");

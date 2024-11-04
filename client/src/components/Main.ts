@@ -3,7 +3,7 @@ import { showToast } from "../utils/toast";
 export const MainComponent = {
   init: async function () {
     //Main HTMl
-    const html = await fetch("http://localhost:4000/main");
+    const html = await fetch("/api/main");
     document.getElementById("content")!.innerHTML = await html.text();
 
     //Elements
@@ -49,7 +49,7 @@ export const MainComponent = {
           currEmoji.innerText = "🤗";
 
           //Updates Sidebar
-          const mostRecentLog = await fetch("http://localhost:4000/recentlog");
+          const mostRecentLog = await fetch("/api/recentlog");
           sidebarContent!.insertAdjacentHTML(
             "beforeend",
             await mostRecentLog.text()
@@ -60,12 +60,12 @@ export const MainComponent = {
     });
 
     //Today's logs for sidebar
-    const todaysLogs = await fetch("http://localhost:4000/sidebarlogs");
+    const todaysLogs = await fetch("/api/sidebarlogs");
     sidebarContent!.innerHTML = await todaysLogs.text();
   },
 
   postAction: async function (icon: string, name: string) {
-    const res = await fetch("http://localhost:4000/main", {
+    const res = await fetch("/api/main", {
       method: "POST",
       body: icon + " " + name,
     });

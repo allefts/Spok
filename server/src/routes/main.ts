@@ -72,10 +72,10 @@ mainRoutes.post("/main", async (c) => {
 
   const userAction: Action = parseAction(rawAction);
 
-  const actionsLeft = getRemainingActions(id);
-  if (actionsLeft === 0) {
-    throw new HTTPException(401, { message: "No actions left!" });
-  }
+  // const actionsLeft = getRemainingActions(id);
+  // if (actionsLeft === 0) {
+  //   throw new HTTPException(401, { message: "No actions left!" });
+  // }
 
   doAction(userAction, id);
 

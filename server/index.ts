@@ -10,13 +10,13 @@ import logRoutes from "./src/routes/logs.js";
 export const app = new Hono();
 
 app.use(logger());
-// app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+// app.use(cors({ origin: "http://localhost:4173", credentials: true }));
 app.use("/*", serveStatic({ root: "../client/dist" }));
 
 //Adds auth routes like signin and register
-app.route("/", authRoutes);
-app.route("/", mainRoutes);
-app.route("/", logRoutes);
+app.route("/api", authRoutes);
+app.route("/api", mainRoutes);
+app.route("/api", logRoutes);
 
 //Wildcard routes
 app.get("*", async (c) => {

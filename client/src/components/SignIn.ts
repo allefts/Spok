@@ -4,7 +4,7 @@ import { SignedInLinks, SignedOutLinks } from "./Nav";
 
 export const SignInComponent = {
   init: async () => {
-    const html = await (await fetch("http://localhost:4000/signin")).text();
+    const html = await (await fetch("/api/signin")).text();
     const content = document.getElementById("content");
     content!.innerHTML = html;
 
@@ -12,7 +12,7 @@ export const SignInComponent = {
     signInForm?.addEventListener("submit", async (e) => {
       e.preventDefault();
       try {
-        const res = await fetch("http://localhost:4000/signin", {
+        const res = await fetch("/api/signin", {
           method: "POST",
           body: new FormData(signInForm as HTMLFormElement),
         });

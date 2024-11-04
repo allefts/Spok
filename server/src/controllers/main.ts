@@ -11,7 +11,7 @@ export const doAction = (action: Action, userId: number) => {
 
     //Updates user logs
     db.prepare(
-      "UPDATE users SET actions_left = actions_left - 1, actions_completed = actions_completed + 1 WHERE id = ?;"
+      "UPDATE users SET actions_completed = actions_completed + 1 WHERE id = ?;"
     ).run(userId);
   } catch (err) {
     console.log(err);

@@ -4,7 +4,7 @@ import { SignedInLinks } from "./Nav";
 
 export const RegisterComponent = {
   init: async () => {
-    const html = await (await fetch("http://localhost:4000/register")).text();
+    const html = await (await fetch("/api/register")).text();
     const content = document.getElementById("content");
     content!.innerHTML = html;
 
@@ -12,7 +12,7 @@ export const RegisterComponent = {
     signInForm?.addEventListener("submit", async (e) => {
       e.preventDefault();
       try {
-        const res = await fetch("http://localhost:4000/register", {
+        const res = await fetch("/api/register", {
           method: "POST",
           body: new FormData(signInForm as HTMLFormElement),
         });

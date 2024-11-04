@@ -12,7 +12,7 @@ export const LogsComponent = {
         const logId = (logCard as HTMLDivElement).dataset.id;
         const deleteBtn = logCard.querySelector(".delete_log_btn");
         deleteBtn?.addEventListener("click", async () => {
-          const res = await fetch("http://localhost:4000/log", {
+          const res = await fetch("/api/log", {
             body: JSON.stringify({ logId }),
             method: "DELETE",
           });
@@ -32,9 +32,7 @@ export const LogsComponent = {
     yesterday.setDate(yesterday.getDate() - 1);
 
     yesterdayLogsBtn?.addEventListener("click", async () => {
-      const res = await fetch(
-        `http://localhost:4000/logs/${yesterday.toString()}`
-      );
+      const res = await fetch(`/api/logs/${yesterday.toString()}`);
 
       if (res.status === 200) {
         const data = await res.json();
@@ -49,7 +47,7 @@ export const LogsComponent = {
   },
   initPage: async function (content: HTMLElement) {
     //HTML
-    const html = await fetch("http://localhost:4000/logs");
+    const html = await fetch("/api/logs");
     content.innerHTML = await html.text();
     return true;
   },

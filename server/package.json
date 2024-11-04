@@ -6,7 +6,9 @@
   "author": "allefts",
   "proxy": "http://localhost:4000",
   "scripts": {
-    "dev": "bun --watch run './index.ts'"
+    "dev": "bun --watch run './index.ts'",
+    "start": "bun run './index.ts'",
+    "build:frontend": "cd ../client && bun run build"
   },
   "devDependencies": {
     "@types/bun": "latest"

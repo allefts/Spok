@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   Router.setupHashChangePrevNext();
 
-  const isThereUser = await fetch("http://localhost:4000/user");
+  const isThereUser = await fetch("/api/user");
   if (isThereUser.status !== 200) {
     //No one logged in
     Router.userSignedIn = false;
