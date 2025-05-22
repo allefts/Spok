@@ -1,8 +1,4 @@
-## 🚀 <b>Spok - Space Themed MafiaWars From MySpace
-
-## ☢️ Underground Fallout - Fallout Themed MafiaWars from MySpace
-
-</b>
+## 🚀 <b>Victory Log - An accomplishment tracker</b>
 
 <b>Frontend</b>: Keeping everything as vanilla as possible
 
